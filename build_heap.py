@@ -1,12 +1,18 @@
 def keyboard():
     n = input().strip()
-
-    if not n.isdigit():
+    try:
+        n = int(n)
+        if n <= 0:
+            raise ValueError
+    except ValueError:
         print("Invalid input: n must be a positive integer")
         return None
 
-    data = list(map(int, input().strip().split(" ")))
-    return data
+    if n:
+        data = list(map(int, input().strip().split(" ")))
+        return data
+
+    return None
 
 
 
