@@ -1,11 +1,13 @@
 def keyboard():
     n = input().strip()
 
-    if n:
-        data = list(map(int, input().strip().split(" ")))
-        return data
+    if not n.isdigit():
+        print("Invalid input: n must be a positive integer")
+        return None
 
-    return None
+    data = list(map(int, input().strip().split(" ")))
+    return data
+
 
 
 def file(filename):
