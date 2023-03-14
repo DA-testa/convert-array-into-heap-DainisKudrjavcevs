@@ -48,9 +48,11 @@ def sift_down(data, i, swaps):
 
 def build_heap(data):
     swaps = []
+    height = 0
     for i in range(len(data) // 2, -1, -1):
         sift_down(data, i, swaps)
-    return len(swaps), swaps
+        height = max(height, len(swaps))
+    return height, swaps
 
 
 def main():
