@@ -1,13 +1,11 @@
-
 def keyboard():
     n = input().strip()
 
     if n:
-        parents = input().strip().split(" ")
-        if parents:
-            return n, parents
+        data = list(map(int, input().strip().split(" ")))
+        return data
 
-    return None, None
+    return None
 
 
 def file(filename):
@@ -16,22 +14,22 @@ def file(filename):
             contents = f.readlines()
     except FileNotFoundError:
         print("File not found")
-        return None, None
+        return None
     except:
         print("Error reading file")
-        return None, None
+        return None
     
     n = contents[0].strip()
     if not n:
         print("Invalid input: n not provided")
-        return None, None
+        return None
     
-    parents = contents[1].strip().split(" ")
-    if not parents:
-        print("Invalid input: parents not provided")
-        return None, None
+    data = list(map(int, contents[1].strip().split(" ")))
+    if not data:
+        print("Invalid input: data not provided")
+        return None
     
-    return n, parents
+    return data
 
 
 def sift_down(data, i, swaps):
@@ -52,52 +50,32 @@ def build_heap(data):
     swaps = []
     for i in range(len(data) // 2, -1, -1):
         sift_down(data, i, swaps)
-    return swaps
-
-
-def compute_height(n, parents):
-    root = parents.index("-1")
-    tree = {}
-    for i, parent in enumerate(parents):
-        if i != root:
-            if parent in tree:
-                tree[parent].append(i)
-            else:
-                tree[parent] = [i]
-    height = 0
-    queue = [(root, 0)]
-    while queue:
-        node, level = queue.pop(0)
-        height = max(height, level)
-        if node in tree:
-            for child in tree[node]:
-                queue.append((child, level + 1))
-    return height + 1
+    return len(swaps), swaps
 
 
 def main():
     input_method = input().strip()
 
     if input_method == "I":
-        n, parents = keyboard()
-        if n and parents:
-            height = compute_height(n, parents)
-            print(int(height))
+        data = keyboard()
+        if data:
+            height, swaps = build_heap(data)
+            print(height)
 
     elif input_method == "F":
         filename = input().strip()
         if str(filename[-1]) != "a":
-            n, parents = file(filename)
-            if n and parents:
-                height = compute_height(n, parents)
-                print(int(height))
+            data = file(filename)
+            if data:
+                height, swaps = build_heap(data)
+                print(height)
         else:
-            n, data = None, []
+            data = []
             with open(f"./test/{filename}") as f:
                 n = int(f.readline().strip())
                 data = list(map(int, f.readline().strip().split()))
-            swaps = build_heap(data)
-            print(len(swaps))
+            height, swaps = build_heap(data)
+            print(height)
             for i, j in swaps:
                 print(i, j)
 
