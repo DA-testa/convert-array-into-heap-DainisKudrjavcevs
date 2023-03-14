@@ -14,7 +14,7 @@ def keyboard():
 
 def file(filename):
     try:
-        with open("convert-array-into-heap-DainisKudrjavcevs/tests/04/n04.txt") as f:
+        with open(f"./tests/{filename}") as f:
             contents = f.readlines()
     except FileNotFoundError:
         print("File not found")
