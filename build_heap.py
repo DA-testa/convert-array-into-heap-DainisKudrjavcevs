@@ -73,24 +73,19 @@ def main():
 
     elif input_method == "F":
         filename = input().strip()
-        if str(filename[-1]) != "a":
-            data = file(filename)
-            if data:
-                height, swaps = build_heap(data)
-                print(height)
-
-                for i, j in swaps:
-                    print(i, j)
-
-        else:
-            data = []
-            with open(f"./test/{filename}") as f:
-                n = int(f.readline().strip())
-                data = list(map(int, f.readline().strip().split()))
+        if not filename.endswith(".txt"):
+            filename += ".txt"
+        data = file(filename)
+        if data:
             height, swaps = build_heap(data)
             print(height)
+
             for i, j in swaps:
                 print(i, j)
+        else:
+            print("Unable to build heap from file.")
+
 
 if __name__ == "__main__":
     main()
+
