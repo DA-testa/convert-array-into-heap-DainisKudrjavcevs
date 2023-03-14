@@ -1,19 +1,15 @@
 def keyboard():
     n = input().strip()
-    try:
-        n = int(n)
-        if n <= 0:
-            raise ValueError
-    except ValueError:
-        print("Invalid input: n must be a positive integer")
-        return None
 
     if n:
+        if not n.isdigit() or int(n) <= 0:
+            print("Invalid input: n must be a positive integer")
+            return None
+        
         data = list(map(int, input().strip().split(" ")))
         return data
 
     return None
-
 
 
 def file(filename):
@@ -72,6 +68,9 @@ def main():
             height, swaps = build_heap(data)
             print(height)
 
+            for i, j in swaps:
+                print(i, j)
+
     elif input_method == "F":
         filename = input().strip()
         if str(filename[-1]) != "a":
@@ -79,6 +78,10 @@ def main():
             if data:
                 height, swaps = build_heap(data)
                 print(height)
+
+                for i, j in swaps:
+                    print(i, j)
+
         else:
             data = []
             with open(f"./test/{filename}") as f:
