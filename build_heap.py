@@ -14,7 +14,7 @@ def keyboard():
 
 def file(filename):
     try:
-        with open(f"./test/{filename}") as f:
+        with open(f"./tests/{filename}") as f:
             contents = f.readlines()
     except FileNotFoundError:
         print("File not found")
