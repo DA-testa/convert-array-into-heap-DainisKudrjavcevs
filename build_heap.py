@@ -1,42 +1,90 @@
-# python3
+def keyboard():
+    n = input().strip()
+
+    if n:
+        if not n.isdigit() or int(n) <= 0:
+            print("Invalid input: n must be a positive integer")
+            return None
+        
+        data = list(map(int, input().strip().split(" ")))
+        return data
+
+    return None
+
+
+def file(filename):
+    try:
+        with open(f"./tests/{filename}") as f:
+            contents = f.readlines()
+    except FileNotFoundError:
+        print("File not found")
+        return None
+    except:
+        print("Error reading file")
+        return None
+    
+    n = contents[0].strip()
+    if not n:
+        print("Invalid input: n not provided")
+        return None
+    
+    data = list(map(int, contents[1].strip().split(" ")))
+    if not data:
+        print("Invalid input: data not provided")
+        return None
+    
+    return data
+
+
+def sift_down(data, i, swaps):
+    min_index = i
+    left = 2 * i + 1
+    if left < len(data) and data[left] < data[min_index]:
+        min_index = left
+    right = 2 * i + 2
+    if right < len(data) and data[right] < data[min_index]:
+        min_index = right
+    if i != min_index:
+        swaps.append((i, min_index))
+        data[i], data[min_index] = data[min_index], data[i]
+        sift_down(data, min_index, swaps)
 
 
 def build_heap(data):
     swaps = []
-    # TODO: Creat heap and heap sort
-    # try to achieve  O(n) and not O(n2)
-
-
-    return swaps
+    height = 0
+    for i in range(len(data) // 2, -1, -1):
+        sift_down(data, i, swaps)
+        height = max(height, len(swaps))
+    return height, swaps
 
 
 def main():
-    
-    # TODO : add input and corresponding checks
-    # add another input for I or F 
-    # first two tests are from keyboard, third test is from a file
+    input_method = input().strip()
 
+    if input_method == "I":
+        data = keyboard()
+        if data:
+            height, swaps = build_heap(data)
+            print(height)
 
-    # input from keyboard
-    n = int(input())
-    data = list(map(int, input().split()))
+            for i, j in swaps:
+                print(i, j)
 
-    # checks if lenght of data is the same as the said lenght
-    assert len(data) == n
-
-    # calls function to assess the data 
-    # and give back all swaps
-    swaps = build_heap(data)
-
-    # TODO: output how many swaps were made, 
-    # this number should be less than 4n (less than 4*len(data))
-
-
-    # output all swaps
-    print(len(swaps))
-    for i, j in swaps:
-        print(i, j)
+    elif input_method == "F":
+        filename = input().strip()
+        if str(filename[-1]) != "a":
+            data = file(filename)
+            if data:
+                height, swaps = build_heap(data)
+                print(height)
+                
+                for i, j in swaps:
+                    print(i, j)
+        else:
+            print("Unable to build heap from file.")
 
 
 if __name__ == "__main__":
     main()
+
